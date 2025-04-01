@@ -12,7 +12,7 @@ export default function HomePage() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[100vh]">
         <Image
-          src="/img/bears.JPG"
+          src="/img/projects/bears/bears.JPG"
           alt="Nick Allen Studio"
           fill
           className="object-cover"
