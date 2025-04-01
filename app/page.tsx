@@ -1,9 +1,18 @@
+'use client'
+
 import Image from 'next/image'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { projects as allProjects } from '@/data/projects'
+import Link from 'next/link'
 
 export default function HomePage() {
+  const [visibleCount, setVisibleCount] = useState(3)
+  const visibleProjects = allProjects.slice(0, visibleCount)
+
   return (
     <main className="bg-brand-black text-brand-white">
-      
+
       {/* HERO SECTION */}
       <section className="relative w-full h-[100vh]">
         <Image
@@ -35,32 +44,60 @@ export default function HomePage() {
       <section className="pb-24 px-6 md:px-16">
         <h3 className="text-2xl md:text-3xl font-semibold mb-6">PROJECTS</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <ProjectCard title="CARGO" img="/img/cargo.png" />
-          <ProjectCard title="WhIsBe Vandalz" img="/img/7days.png" />
-          <ProjectCard title="Shoper" img="/img/johnie.png" />
+          {visibleProjects.map((project, i) => (
+            <AnimatedProjectCard
+              key={project.slug}
+              title={project.title}
+              img={project.image}
+              href={`/projects/${project.slug}`}
+              index={i}
+            />
+          ))}
         </div>
-        <div className="text-center mt-8">
-          <button className="px-6 py-2 border border-brand-gray rounded hover:bg-brand-white hover:text-brand-black transition">
-            Load More
-          </button>
-        </div>
+
+        {/* Load More */}
+        {visibleCount < allProjects.length && (
+          <div className="text-center mt-8">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 3)}
+              className="px-6 py-2 border border-brand-gray rounded hover:bg-brand-white hover:text-brand-black transition"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </section>
     </main>
   )
 }
 
-type ProjectCardProps = {
+interface ProjectCardProps {
   title: string
   img: string
+  href: string
+  index: number
 }
 
-function ProjectCard({ title, img }: ProjectCardProps) {
+function AnimatedProjectCard({ title, img, href, index }: ProjectCardProps) {
   return (
-    <div className="overflow-hidden">
-      <div className="aspect-[4/5] relative mb-2">
-        <Image src={img} alt={title} fill className="object-cover" />
-      </div>
-      <p className="text-sm text-center text-brand-white">{title}</p>
-    </div>
+    <motion.div
+      className="overflow-hidden"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.1 }}
+    >
+      <Link href={href}>
+        <div className="aspect-[4/5] relative mb-2">
+          <Image
+            src={img}
+            alt={title}
+            fill
+            className="object-cover rounded-md hover:opacity-90 transition"
+          />
+        </div>
+        <p className="text-sm text-center text-brand-white">{title}</p>
+      </Link>
+    </motion.div>
   )
 }
