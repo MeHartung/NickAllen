@@ -9,10 +9,10 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          black: '#0d0d0d',
-          white: '#f2f2f2',
-          gray: '#a3a3a3',
-          accent: '#ff0055',
+          black: '#000000',       // Текст
+          white: '#ffffff',       // Фон
+          gray: '#6b7280',        // Второстепенный текст (темно-серый)
+          accent: '#ff0055',      // Акцент (оставим если нужен)
         },
       },
     },

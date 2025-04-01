@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -33,60 +34,67 @@ export default function Header() {
       hideOnScroll ? '-translate-y-full' : 'translate-y-0'
     }`}>
       <div className="relative flex items-center justify-between px-4 md:px-8 py-2">
-        
+
         {/* Avatar */}
-        <Link href="/" className="shrink-0">
-          <Image
-            src="/img/avatar.jpg"
-            alt="Avatar"
-            width={36}
-            height={36}
-            className="rounded-full object-cover"
-          />
-        </Link>
+        <Link href="/" className="shrink-0 w-9 h-9 relative rounded-full overflow-hidden border border-white/10">
+  <Image
+    src="/img/avatar.jpg"
+    alt="Avatar"
+    fill
+    className="object-cover"
+  />
+</Link>
 
         {/* Center nav (desktop) */}
-        <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-          items-center gap-6 px-5 py-2 rounded-full bg-brand-black/70 text-brand-white
+        <nav className="hidden md:flex h-12 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+          items-center gap-4 px-4 rounded-full bg-brand-black/70 text-brand-white
           backdrop-blur-md border border-white/10 shadow-md">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-brand-white px-3 py-1 rounded-full hover:bg-white/10 transition"
+              className="relative group text-sm text-brand-white px-3 py-2 transition"
             >
-              {link.label}
+              <span>{link.label}</span>
+              <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-brand-gray transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
 
         {/* Burger menu (mobile) */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-brand-white"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+        <div className="md:hidden relative">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-white/20 bg-brand-black/60 text-white backdrop-blur-md shadow-lg"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
 
-      {/* Mobile nav */}
-      {isOpen && (
-        <nav className="md:hidden absolute top-14 left-0 w-full 
-          bg-brand-black/90 text-brand-white flex flex-col 
-          items-start gap-4 p-6 backdrop-blur-md border-t border-white/10 shadow-lg">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="text-lg px-3 py-1 rounded-full hover:bg-white/10 transition"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      )}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.nav
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="absolute right-0 mt-2 w-48 bg-brand-black text-brand-white rounded-lg shadow-xl border border-white/10 p-4 space-y-3 z-50"
+              >
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block text-sm hover:text-brand-gray transition"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </motion.nav>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </header>
   )
 }
