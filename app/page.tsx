@@ -10,22 +10,38 @@ export default function HomePage() {
     <main className="bg-brand-white text-brand-black">
 
       {/* HERO SECTION */}
-      <section className="relative w-full h-[100vh]">
-        <Image
-          src="/img/projects/bears/bears.JPG"
-          alt="Nick Allen Studio"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute inset-0 flex items-end justify-between px-6 md:px-16 pb-12 z-10">
-          <h1 className="text-3xl md:text-5xl font-semibold text-white">
-            NICK ALLEN STUDIO
-          </h1>
-      
-        </div>
-      </section>
+      <section className="relative w-full h-[100vh] overflow-hidden">
+  {/* YouTube Video Background — Desktop Only */}
+  <iframe
+    src="https://www.youtube.com/embed/oByDcLFqfOU?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&loop=1&playlist=oByDcLFqfOU"
+    className="hidden md:block absolute top-0 left-0 w-full h-full pointer-events-none"
+    allow="autoplay; fullscreen"
+    allowFullScreen
+    title="Nick Allen Studio"
+  />
+
+  {/* YouTube Video Background — Mobile Only */}
+  <iframe
+  src="https://www.youtube.com/embed/bzc9JqMSZjM?autoplay=1&mute=1&controls=0&loop=1&playlist=bzc9JqMSZjM&modestbranding=1&rel=0"
+  className="block md:hidden absolute top-0 left-0 w-full h-full pointer-events-none"
+  allow="autoplay; fullscreen"
+  allowFullScreen
+  title="Nick Allen Studio Mobile"
+/>
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/30 z-10" />
+
+  {/* Content */}
+  <div className="absolute inset-0 flex items-end justify-between px-6 md:px-16 pb-12 z-20">
+    <h1 className="text-3xl md:text-5xl font-semibold text-white">
+      NICK ALLEN STUDIO
+    </h1>
+    <button className="px-6 py-2 bg-white text-black rounded hover:bg-gray-100 transition">
+      Contact me
+    </button>
+  </div>
+</section>
 
       {/* ABOUT ME */}
       <section className="py-12 px-6 md:px-16 text-left">
